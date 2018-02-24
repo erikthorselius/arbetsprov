@@ -13,3 +13,7 @@ Kom ingång
 pip install pipenv
 pipenv install
 pipenv shell
+
+
+starta databas
+#TODO skriv om mongodb
