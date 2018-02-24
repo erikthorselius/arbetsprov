@@ -7,3 +7,9 @@ epostadress, telefonnummer, användarnamn eller liknande)
 * Ta bort ett eller flera meddelanden för en mottagare
 * Hämta tidsordnade meddelanden till en mottagare enligt start och stopp
 index
+
+
+Kom ingång
+pip install pipenv
+pipenv install
+pipenv shell
