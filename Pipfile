@@ -12,6 +12,11 @@ name = "pypi"
 [packages]
 
 flask = "*"
+werkzeug = "*"
+flask-api = "*"
+pymongo = "*"
+
 
 [requires]
+
 python_version = "3.6"
