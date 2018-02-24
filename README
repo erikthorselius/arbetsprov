@@ -1,0 +1,9 @@
+***REMOVED*** Arbetsprov
+
+Programmet ska:
+* Skicka meddelande till en mottagare (till exempel identifierad med
+epostadress, telefonnummer, användarnamn eller liknande)
+* Hämta nya (sedan förra hämtningen) meddelanden till mottagare
+* Ta bort ett eller flera meddelanden för en mottagare
+* Hämta tidsordnade meddelanden till en mottagare enligt start och stopp
+index
