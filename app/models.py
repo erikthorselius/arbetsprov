@@ -1,36 +1,14 @@
-from app import db
-from pprint import pprint
+from collections import namedtuple
+from bson.objectid import ObjectId
+from datetime import datetime
 
 
-class Messages:
-    """This class represents the bucketlist table.
+class MessageFactory(object):
+    @classmethod
+    def create(cls, user_id, message):
+        now = datetime.now()
 
-    __tablename__ = 'bucketlists'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(
-        db.DateTime, default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp())
-    """
-    def __init__(self, name):
-        """initialize with name."""
-        self.name = name
-
-    def save(self):
-        pprint("save")
-        #db.session.add(self)
-        #db.session.commit()
-
-    @staticmethod
-    def get_all():
-        pprint("get_all")
-
-    def delete(self):
-        pprint("delete")
-        #db.session.delete(self)
-        #db.session.commit()
-
-    def __repr__(self):
-        return "<Messages: {}>".format(self.name)
+        return {'_id': ObjectId(),
+                'user_id': user_id,
+                'message': message,
+                'created_date': now.replace(microsecond=0)}
