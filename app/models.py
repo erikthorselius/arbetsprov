@@ -11,4 +11,5 @@ class MessageFactory(object):
         return {'_id': ObjectId(),
                 'user_id': user_id,
                 'message': message,
-                'created_date': now.replace(microsecond=0)}
+                'created_date': now.replace(microsecond=0),
+                'is_unread': True}
