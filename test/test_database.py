@@ -6,6 +6,8 @@ from app.models import MessageFactory
 '''
 Slow test running against a real database. Observe that it remove the database at the end. 
 '''
+
+
 class DatabaseTestCase(unittest.TestCase):
     def setUp(self):
         # self.client = MagicMock()
@@ -24,7 +26,14 @@ class DatabaseTestCase(unittest.TestCase):
         id = message['id']
         self.db.save_message(message)
         result = self.db.get_message(id)
-        self.assertEqual(message, result)
+        assert result.items() <= message.items()
+
+    def test_should_filter_out_database_id(self):
+        message = self.msg_factory.create("username", "message")
+        id = message['id']
+        self.db.save_message(message)
+        result = self.db.get_message(id)
+        self.assertEqual('', result.get('_id', ''))
 
     def test_message_delete(self):
         message = self.msg_factory.create("username", "message")
@@ -42,6 +51,11 @@ class DatabaseTestCase(unittest.TestCase):
             self.db.save_message(self.msg_factory.create("username", "message"))
         res = self.db.get_unread_messages("username")
         self.assertEqual(len(res), unread_messages)
+
+    def test_find_unread_filter_out_id(self):
+        self.db.save_message(self.msg_factory.create("username", "message"))
+        message = self.db.get_unread_messages("username")
+        self.assertEqual('', message[0].get('_id', ''))
 
     def tearDown(self):
         """teardown ALL messages in db"""
