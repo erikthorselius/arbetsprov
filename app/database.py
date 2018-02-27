@@ -17,13 +17,14 @@ class Database:
             return False
 
     def save_message(self, message):
-        return self.messages.insert_one(message).inserted_id
+        self.messages.insert_one(message)
+        return message['id']
 
     def get_message(self, message_id):
-        return self.messages.find_one({"_id": message_id})
+        return self.messages.find_one({"id": message_id})
 
     def delete_message(self, message_id):
-        return self.messages.delete_one({"_id": message_id}).deleted_count
+        return self.messages.delete_one({"id": message_id}).deleted_count
 
     def get_unread_messages(self, user_id):
         query = {'user_id': user_id, 'is_unread': True}
