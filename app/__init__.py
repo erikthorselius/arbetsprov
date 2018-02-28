@@ -16,13 +16,13 @@ def create_app(config_name):
     @app.route('/messages/<user_id>/<message_id>', methods=['GET', 'DELETE'])
     def message(user_id, message_id):
         if request.method == "GET":
-            message = db.get_message(message_id)
+            message = db.get_message(user_id, message_id)
             if message != None:
                 return message
             else:
                 abort(404)
         else:
-            count = db.delete_message(message_id)
+            count = db.delete_message(user_id, message_id)
             if count == 1:
                 response = jsonify()
                 response.status_code = 204
