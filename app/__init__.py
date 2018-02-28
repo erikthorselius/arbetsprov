@@ -46,6 +46,10 @@ def create_app(config_name):
             else:
                 abort(404)  # Not sure if I should return 404 or 204
 
+    @app.route('/messages/<user_id>/unread', methods=['GET'])
+    def unread(user_id):
+        return db.get_unread_messages(user_id)
+
     @app.route('/status', methods=['GET'])
     def status():
         return (jsonify(db.status()))
