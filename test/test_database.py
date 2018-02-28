@@ -57,6 +57,16 @@ class DatabaseTestCase(unittest.TestCase):
         message = self.db.get_unread_messages("username")
         self.assertEqual('', message[0].get('_id', ''))
 
+    def test_get_all_messages(self):
+        for x in range(0, 2):
+            self.db.save_message(self.msg_factory.create("username", "message"))
+        messages = self.db.get_messages("username")
+        self.assertEqual(len(messages), 2)
+
+    def test_get_all_messages_for_bogus_id(self):
+        messages = self.db.get_messages("bogus_id")
+        self.assertEqual(len(messages), 0)
+
     def tearDown(self):
         """teardown ALL messages in db"""
         self.client.message_db.messages.delete_many({})

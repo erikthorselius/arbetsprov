@@ -32,3 +32,6 @@ class Database:
         unread = list(self.messages.find(query, projection=self.id_filter))
         self.messages.update_many(query, {'$set': {'is_unread': False}})
         return unread
+
+    def get_messages(self, user_id):
+        return list(self.messages.find({'user_id': user_id}, projection=self.id_filter))
