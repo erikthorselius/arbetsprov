@@ -35,3 +35,8 @@ class Database:
 
     def get_all(self, user_id):
         return list(self.messages.find({'user_id': user_id}, projection=self.id_filter))
+
+    def get_messages_between(self, user_id, start, stop):
+        return list(self.messages.find({'user_id': user_id,
+                                        'received_datetime': {'$gte': start, '$lt': stop}
+                                        }, projection=self.id_filter))

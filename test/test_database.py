@@ -2,10 +2,17 @@ import unittest
 from app.database import Database
 from pymongo import MongoClient
 from app.models import MessageFactory
+from datetime import datetime, timedelta
 
 '''
 Slow test running against a real database. Observe that it remove the database at the end. 
 '''
+
+
+def generate_message_in_time_and_save(self, time):
+    message = self.msg_factory._MessageFactory__create_at_time(self.user_id, "message", time)
+    self.db.save_message(message)
+    return message
 
 
 class DatabaseTestCase(unittest.TestCase):
@@ -83,6 +90,15 @@ class DatabaseTestCase(unittest.TestCase):
     def test_get_all_messages_for_bogus_id(self):
         messages = self.db.get_all("bogus_id")
         self.assertEqual(len(messages), 0)
+
+    def test_get_messages_between_start_and_stop(self):
+        today = datetime.today().replace(microsecond=0)
+        generate_message_in_time_and_save(self, today - timedelta(days=3))
+        generate_message_in_time_and_save(self, today - timedelta(days=2))
+        generate_message_in_time_and_save(self, today - timedelta(days=1))
+        messages = self.db.get_messages_between(self.user_id, today - timedelta(days=2, hours=23, minutes=59, seconds=59), today - timedelta(days=1))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(messages[0].get('received_datetime'), today - timedelta(days=2))
 
     def tearDown(self):
         """teardown ALL messages in db"""
