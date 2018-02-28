@@ -56,14 +56,14 @@ class MessageApiTestCase(unittest.TestCase):
         filtered_res = [message for message in messages if message.get('id') in ids]
         self.assertEqual(len(ids), len(filtered_res))
 
-
     def test_delete_messages_by_ids(self):
         m1 = json.loads(self.client().post('/messages/username', data={'message': self.message_data}).data)
         m2 = json.loads(self.client().post('/messages/username', data={'message': self.message_data}).data)
         res = self.client().delete('/messages/username/' + m1.get('id') + ',' + m2.get('id'))
         self.assertEqual(res.status_code, 204)
 
-def tearDown(self):
+    def tearDown(self):
+
         """teardown all initialized variables."""
 
 
