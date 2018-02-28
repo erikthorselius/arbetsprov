@@ -5,7 +5,6 @@ from app.models import MessageFactory
 from app.database import Database
 from pymongo import MongoClient
 
-
 def create_app(config_name):
     app = FlaskAPI(__name__, instance_relative_config=True)
     app.config.from_object(app_config[config_name])
@@ -13,17 +12,20 @@ def create_app(config_name):
     message_factory = MessageFactory(app.config["SECRET"])
     db = Database(MongoClient(app.config["DATABASE_URI"]))
 
-    @app.route('/messages/<user_id>/<message_id>', methods=['GET', 'DELETE'])
-    def message(user_id, message_id):
+    @app.route('/messages/<user_id>/<message_cvs>', methods=['GET', 'DELETE'])
+    def message(user_id, message_cvs):
+        message_ids = message_cvs.split(',')
         if request.method == "GET":
-            message = db.get_message(user_id, message_id)
-            if message != None:
-                return message
+            messages = db.get_messages(user_id, message_ids)
+            if len(messages) > 0:
+                response = jsonify(messages)
+                response.status_code = 200
+                return response
             else:
                 abort(404)
         else:
-            count = db.delete_message(user_id, message_id)
-            if count == 1:
+            count = db.delete_messages(user_id, message_ids)
+            if count >= 1:
                 response = jsonify()
                 response.status_code = 204
                 return response
@@ -40,7 +42,7 @@ def create_app(config_name):
             response.status_code = 201
             return response
         else:
-            messages = db.get_messages(user_id)
+            messages = db.get_all(user_id)
             if messages != 0:
                 return messages
             else:

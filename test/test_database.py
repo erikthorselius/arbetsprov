@@ -22,26 +22,42 @@ class DatabaseTestCase(unittest.TestCase):
         result = self.db.save_message(message)
         self.assertEqual(id, result)
 
-    def test_should_get_message(self):
+    def test_get_message(self):
         message = self.msg_factory.create(self.user_id, "message")
         id = message['id']
         self.db.save_message(message)
-        result = self.db.get_message(self.user_id, id)
-        assert result.items() <= message.items()
+        result = self.db.get_messages(self.user_id, [id])
+        assert result[0].items() <= message.items()
 
-    def test_should_filter_out_database_id(self):
-        message = self.msg_factory.create(self.user_id, "message")
-        id = message['id']
-        self.db.save_message(message)
-        result = self.db.get_message(self.user_id, id)
-        self.assertEqual('', result.get('_id', ''))
+    def test_get_messages(self):
+        m1 = self.msg_factory.create(self.user_id, "message 1")
+        m2 = self.msg_factory.create(self.user_id, "message 2")
+        self.db.save_message(m1)
+        self.db.save_message(m2)
+        result = self.db.get_messages(self.user_id, [m1.get('id'), m2.get('id')])
+        self.assertEqual(2, len(result))
 
-    def test_message_delete(self):
+    def test_filter_out_database_id(self):
         message = self.msg_factory.create(self.user_id, "message")
         id = message['id']
         self.db.save_message(message)
-        result = self.db.delete_message(self.user_id, id)
+        result = self.db.get_messages(self.user_id, [id])
+        self.assertEqual('', result[0].get('_id', ''))
+
+    def test_delete_message(self):
+        message = self.msg_factory.create(self.user_id, "message")
+        id = message['id']
+        self.db.save_message(message)
+        result = self.db.delete_messages(self.user_id, [id])
         self.assertEqual(result, 1)
+
+    def test_delete_messages(self):
+        m1 = self.msg_factory.create(self.user_id, "message 1")
+        m2 = self.msg_factory.create(self.user_id, "message 2")
+        self.db.save_message(m1)
+        self.db.save_message(m2)
+        result = self.db.delete_messages(self.user_id, [m1.get('id'), m2.get('id')])
+        self.assertEqual(2, result)
 
     def test_find_unread_message(self):
         for x in range(0, 2):
@@ -61,11 +77,11 @@ class DatabaseTestCase(unittest.TestCase):
     def test_get_all_messages(self):
         for x in range(0, 2):
             self.db.save_message(self.msg_factory.create(self.user_id, "message"))
-        messages = self.db.get_messages(self.user_id)
+        messages = self.db.get_all(self.user_id)
         self.assertEqual(len(messages), 2)
 
     def test_get_all_messages_for_bogus_id(self):
-        messages = self.db.get_messages("bogus_id")
+        messages = self.db.get_all("bogus_id")
         self.assertEqual(len(messages), 0)
 
     def tearDown(self):
