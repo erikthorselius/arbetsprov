@@ -21,11 +21,11 @@ class Database:
         self.messages.insert_one(message)
         return message['id']
 
-    def get_message(self, message_id):
-        return self.messages.find_one({"id": message_id}, projection=self.id_filter)
+    def get_message(self, user_id, message_id):
+        return self.messages.find_one({"id": message_id, "user_id": user_id}, projection=self.id_filter)
 
-    def delete_message(self, message_id):
-        return self.messages.delete_one({"id": message_id}).deleted_count
+    def delete_message(self, user_id, message_id):
+        return self.messages.delete_one({"id": message_id, "user_id": user_id}).deleted_count
 
     def get_unread_messages(self, user_id):
         query = {'user_id': user_id, 'is_unread': True}
