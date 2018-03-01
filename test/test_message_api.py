@@ -67,9 +67,11 @@ class MessageApiTestCase(unittest.TestCase):
     def test_message_with_faulty_start(self):
         res = self.client().get('/messages/username?start=2018-13-01T10:11:23')
         self.assertEqual(res.status_code, 400)
+
     def test_message_with_faulty_stop(self):
         res = self.client().get('/messages/username?stop=2018-00-01T10:11:23')
         self.assertEqual(res.status_code, 400)
-# Make the tests conveniently executable
+
+
 if __name__ == "__main__":
     unittest.main()

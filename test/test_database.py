@@ -17,7 +17,6 @@ def generate_message_in_time_and_save(self, time):
 
 class DatabaseTestCase(unittest.TestCase):
     def setUp(self):
-        # self.client = MagicMock()
         self.client = MongoClient()
         self.db = Database(self.client)
         self.msg_factory = MessageFactory("salt")
@@ -110,10 +109,8 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(messages[1].get('received_datetime'), today - timedelta(days=2))
 
     def tearDown(self):
-        """teardown ALL messages in db"""
         self.client.message_db.messages.delete_many({})
 
 
-# Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()
