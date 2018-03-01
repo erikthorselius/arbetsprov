@@ -1,8 +1,6 @@
 import unittest
 from app import create_app
 import json
-from pprint import pprint
-from urllib.parse import urljoin
 
 
 class MessageApiTestCase(unittest.TestCase):
@@ -62,11 +60,16 @@ class MessageApiTestCase(unittest.TestCase):
         res = self.client().delete('/messages/username/' + m1.get('id') + ',' + m2.get('id'))
         self.assertEqual(res.status_code, 204)
 
-    def tearDown(self):
+    def test_message_between_start_stop_not_found(self):
+        res = self.client().get('/messages/username?start=2018-01-01T10:11:23&stop=2018-02-01T10:09:01')
+        self.assertEqual(res.status_code, 404)
 
-        """teardown all initialized variables."""
-
-
+    def test_message_with_faulty_start(self):
+        res = self.client().get('/messages/username?start=2018-13-01T10:11:23')
+        self.assertEqual(res.status_code, 400)
+    def test_message_with_faulty_stop(self):
+        res = self.client().get('/messages/username?stop=2018-00-01T10:11:23')
+        self.assertEqual(res.status_code, 400)
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

@@ -4,6 +4,15 @@ from flask import request, jsonify, abort
 from app.models import MessageFactory
 from app.database import Database
 from pymongo import MongoClient
+from dateutil.parser import parse
+from datetime import datetime
+
+
+def parse_date_time(user_input, default):
+    if user_input is None:
+        return default
+    return parse(user_input)
+
 
 def create_app(config_name):
     app = FlaskAPI(__name__, instance_relative_config=True)
@@ -37,16 +46,20 @@ def create_app(config_name):
         if request.method == "POST":
             user_input = str(request.data.get('message', ''))  # TODO Validate user_input
             message = message_factory.create(user_id, user_input)
-            id = db.save_message(message)
-            response = jsonify(id=id)
+            response = jsonify(id=db.save_message(message))
             response.status_code = 201
             return response
         else:
-            messages = db.get_all(user_id)
-            if messages != 0:
-                return messages
-            else:
-                abort(404)  # Not sure if I should return 404 or 204
+            try:
+                start = parse_date_time(request.args.get('start'), datetime.min)
+                stop = parse_date_time(request.args.get('stop'), datetime.max)
+                messages = db.get_messages_between(user_id, start, stop)
+                if len(messages) != 0:
+                    return messages
+                else:
+                    abort(404)  # Not sure if I should return 404 or 204
+            except (ValueError, OverflowError):
+                abort(400)
 
     @app.route('/messages/<user_id>/unread', methods=['GET'])
     def unread(user_id):
