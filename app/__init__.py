@@ -27,9 +27,7 @@ def create_app(config_name):
         if request.method == "GET":
             messages = db.get_messages(user_id, message_ids)
             if len(messages) > 0:
-                response = jsonify(messages)
-                response.status_code = 200
-                return response
+                return jsonify(messages)
             else:
                 abort(404)
         else:
@@ -55,7 +53,7 @@ def create_app(config_name):
                 stop = parse_date_time(request.args.get('stop'), datetime.max)
                 messages = db.get_messages_between(user_id, start, stop)
                 if len(messages) != 0:
-                    return messages
+                    return jsonify(messages)
                 else:
                     abort(404)  # Not sure if I should return 404 or 204
             except (ValueError, OverflowError):
@@ -63,10 +61,10 @@ def create_app(config_name):
 
     @app.route('/messages/<user_id>/unread', methods=['GET'])
     def unread(user_id):
-        return db.get_unread_messages(user_id)
+        return jsonify(db.get_unread_messages(user_id))
 
     @app.route('/status', methods=['GET'])
     def status():
-        return (jsonify(db.status()))
+        return jsonify(db.status())
 
     return app
