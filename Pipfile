@@ -11,12 +11,12 @@ name = "pypi"
 
 [packages]
 
-Flask = "*"
-Werkzeug = "*"
-Flask-API = "*"
+flask = "*"
+werkzeug = "*"
+flask-api = "*"
 pymongo = "*"
 hashids = "*"
-
+python-dateutil = "*"
 
 [requires]
 
