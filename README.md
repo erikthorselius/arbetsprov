@@ -15,6 +15,7 @@ Installera och starta mongodb. Jag har version v3.6.2 av mongodb. Testerna kräv
 pip install pipenv
 pipenv install
 mv env.example .env `#Editera env.example, kolla att database url passar`
+mv instance.example instance
 pipenv shell
 ```
 
