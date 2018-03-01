@@ -17,3 +17,12 @@ pipenv shell
 
 starta databas
 #TODO skriv om mongodb
+#Rest examples
+
+
+#TODO rewrite to curl
+http localhost:5000/messages/example_user <<< '{"message":"God morning example_user!"}'
+http localhost:5000/messages/example_user/unread
+http 'localhost:5000/messages/example_user?start=2018-02-28T22:01:31&stop=2018-03-01T20:22:07'
+http 'localhost:5000/messages/example_user?start=2018-02-28T22:01:31'
+http 'localhost:5000/messages/example_user?stop=2018-03-01T20:22:07'
