@@ -100,6 +100,15 @@ class DatabaseTestCase(unittest.TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(messages[0].get('received_datetime'), today - timedelta(days=2))
 
+    def test_get_messages_between_min_and_max(self):
+        today = datetime.today().replace(microsecond=0)
+        generate_message_in_time_and_save(self, today - timedelta(days=3))
+        generate_message_in_time_and_save(self, today - timedelta(days=2))
+        generate_message_in_time_and_save(self, today - timedelta(days=1))
+        messages = self.db.get_messages_between(self.user_id, datetime.min, datetime.max)
+        self.assertEqual(len(messages), 3)
+        self.assertEqual(messages[1].get('received_datetime'), today - timedelta(days=2))
+
     def tearDown(self):
         """teardown ALL messages in db"""
         self.client.message_db.messages.delete_many({})
