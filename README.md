@@ -24,10 +24,10 @@ pipenv shell
 nosetests
 ```
 
-## Start the applikationen
+## Start applikationen
 `flask run`
 
-## Exemple requests
+## Exempel requests
 ### Skicka meddelande
 ```Bash
 curl -H "Content-Type: application/json" -X POST -d '{"message":"God day example_user!"}' http://localhost:5000/messages/example_user
