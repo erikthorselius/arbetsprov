@@ -1,6 +1,6 @@
 # Arbetsprov
 
-## Uppgiten:
+## Uppgiften:
 Programmet ska:
 * Skicka meddelande till en mottagare (till exempel identifierad med epostadress, telefonnummer, användarnamn eller liknande)
 * Hämta nya (sedan förra hämtningen) meddelanden till mottagare
@@ -50,4 +50,5 @@ curl 'http://localhost:5000/messages/example_user/unread'
 curl 'http://localhost:5000/messages/example_user?start=2018-02-28T22:01:31&stop=2018-03-01T20:22:07'
 curl 'http://localhost:5000/messages/example_user?start=2018-02-28T22:01:31'
 curl 'http://localhost:5000/messages/example_user?stop=2018-03-01T20:22:07'
+curl 'http://localhost:5000/messages/example_user'
 ```
