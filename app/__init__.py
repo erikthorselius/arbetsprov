@@ -21,7 +21,7 @@ def create_app(config_name):
     message_factory = MessageFactory(app.config["SECRET"])
     db = Database(MongoClient(app.config["DATABASE_URI"]))
 
-    @app.route('/messages/<user_id>/<message_cvs>', methods=['GET', 'DELETE'])
+    @app.route('/messages/<string:user_id>/<string:message_cvs>', methods=['GET', 'DELETE'])
     def message(user_id, message_cvs):
         message_ids = message_cvs.split(',')
         if request.method == "GET":
@@ -41,10 +41,10 @@ def create_app(config_name):
             else:
                 abort(404)
 
-    @app.route('/messages/<user_id>', methods=['POST', 'GET'])
-    def messages(user_id):  # TODO Validate user_id
+    @app.route('/messages/<string:user_id>', methods=['POST', 'GET'])
+    def messages(user_id):
         if request.method == "POST":
-            user_input = str(request.data.get('message', ''))  # TODO Validate user_input
+            user_input = str(request.data.get('message', ''))
             message = message_factory.create(user_id, user_input)
             response = jsonify(id=db.save_message(message))
             response.status_code = 201
