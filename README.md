@@ -8,7 +8,7 @@
 
 ## Installationsinstruktioner
 ### Starta mongodb databasen
-Installera och starta mongodb. Jag har version v3.6.2 av mongodb. Testerna kräver en databas igång, en förbättring är att ersätta databasen med mockad version, kanske mongomock.
+Installera och starta mongodb. Jag har version v3.6.2 av mongodb. Testerna kräver en databas igång, en förbättring är att ersätta databasen med mockad version till exempel mongomock.
 
 ### Starta applikationen
 ```bash
