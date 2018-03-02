@@ -7,10 +7,11 @@ Programmet ska:
 * Ta bort ett eller flera meddelanden för en mottagare
 * Hämta tidsordnade meddelanden till en mottagare enligt start och stopp index
 
-## Starta monogodb databasen
+## Installationsinstruktioner
+### Starta mongodb databasen
 Installera och starta mongodb. Jag har version v3.6.2 av mongodb. Testerna kräver en databas igång, en förbättring är att ersätta databasen med mockad version, kanske mongomock.
 
-## Starta applikationen
+### Starta applikationen
 ```bash
 pip install pipenv
 pipenv install
@@ -19,12 +20,12 @@ cp -r instance.example instance
 pipenv shell
 ```
 
-## Kör testerna
+### Kör testerna
 ```bash
 nosetests
 ```
 
-## Start applikationen
+### Start applikationen
 `flask run`
 
 ## Exempel requests
