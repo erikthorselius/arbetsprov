@@ -13,7 +13,7 @@ Installera och starta mongodb. Jag har version v3.6.2 av mongodb. Testerna kräv
 ### Starta applikationen
 ```bash
 pip install pipenv
-pipenv install
+pipenv install --dev
 cp env.example .env `#Editera env.example, kolla att database url passar`
 cp -r instance.example instance
 pipenv shell
